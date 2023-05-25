@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <math.h>
+int powerMod(int base, int exponent, int modulus) {
+    int result = 1;
+    while (exponent > 0) {
+        if (exponent & 1) {
+            result = (result * base) % modulus;
+        }
+        base = (base * base) % modulus;
+        exponent >>= 1;
+    }
+    return result;
+}
+int main() {
+    int prime, primitiveRoot;
+    int privateKeyA, privateKeyB;
+    printf("Enter the prime numberand its primitiveRoot ");
+    scanf("%d %d",&prime,&primitiveRoot);
+    printf("Enter the private key for user A and B ");
+    scanf("%d %d",&privateKeyA,&privateKeyB);
+    
+    int publicKeyA = powerMod(primitiveRoot, privateKeyA, prime); 
+    int publicKeyB = powerMod(primitiveRoot, privateKeyB, prime); 
+
+    int sharedSecretA = powerMod(publicKeyB, privateKeyA, prime); 
+    int sharedSecretB = powerMod(publicKeyA, privateKeyB, prime);
+
+    printf("Shared secret of user A and B: %d %d\n",sharedSecretA,sharedSecretB);
+    return 0;
+}
